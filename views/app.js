@@ -24,10 +24,14 @@ app.set("view engine", "ejs");
 // arguments ignore encoding the url extension
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// renders the index ejs file
 
-app.get("/", (req, res) => {
-    res.render("index")
+
+// renders the index ejs file
+app.get("/", (req, res, next) => {
+    if(req.url === "/") {
+        res.render("index");
+        return;
+    }
 });
 
 // if the url is /new-entry it renders the new-entry ejs file
@@ -51,7 +55,11 @@ app.post("/new-entry", (req,res) => {
 })
 
 app.use((req,res) => {
-    res.status(400).render("404");
+    res.status(404).render("404");
+})
+
+http.createServer(app).listen(3000, () => {
+    console.log("running on port 3000");
 })
 
 
