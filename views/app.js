@@ -34,3 +34,24 @@ app.get("/", (req, res) => {
 app.get("/new-entry", (req,res) => {
     res.render("new-entry");
 })
+
+// if the url is host:port/new-entry, it will push the new entry to the entries array
+app.post("/new-entry", (req,res) => {
+    if(!req.body.title || !req.body.body){
+        res.status(400).send("all the entries must have a title and a body")
+        return;
+    }
+    // push new entry to the entries array
+    entries.push({
+        title: req.body.title,
+        body: req.body.body,
+        published: new Date()
+    })
+    res.redirect("/");
+})
+
+app.use((req,res) => {
+    res.status(400).render("404");
+})
+
+
